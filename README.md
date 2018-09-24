@@ -37,9 +37,9 @@ The [Enron event history](https://github.com/aidinhass/enron/blob/master/enron/d
 
 ```
 .
-├── enro                <- source files used in this projectn.
+├── enro                <- source files used in this project.
 │   ├── data
-│   │   ├── ex          <- raw data utilized in this project.
+│   │   ├── ex          <- raw data used in this project.
 │   │   └── raw         <- data files created in this project.
 │   └── scripts         <- script files used in this project.
 │      
