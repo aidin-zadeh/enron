@@ -3,12 +3,12 @@ This repository contains a Python project that builds email correspondences anal
 
 1. A .csv file with three columns---"person", "sent", "received"---where the final two columns contain
  the number of emails that person sent or received ordered by number of sent emails. The `csv` file will be stored at 
- `enron/data/ext`.
+ `enron/data/ext` directory.
 
 2. A PNG image visualizing the number of emails sent over time by some of the most prolific person
- , top-N senders in (1). The PNG file will be saved at `images` director. 
+ , top-N senders in (1). The PNG file will be saved at `images` directory. 
 
-3. A visualization that shows the [relative contact ratio](https://en.wikipedia.org/wiki/Relative_change_and_difference) for the same people in (2). The PNG file will be saved at `images` director. 
+3. A visualization that shows the [relative contact ratio](https://en.wikipedia.org/wiki/Relative_change_and_difference) for the same people in (2). The PNG file will be saved at `images` directory. 
 
 
 ## Data
