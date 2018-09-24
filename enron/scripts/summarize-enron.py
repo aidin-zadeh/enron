@@ -1,9 +1,12 @@
+from __future__ import print_function
 import os, inspect
 import argparse
+import datetime as dt
 import pandas as pd
 import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.io as pio
+from itertools import chain
 
 
 CURR_DIR = os.path.dirname(inspect.getabsfile(inspect.currentframe()))
@@ -39,22 +42,82 @@ argparser.add_argument(
 )
 
 
+# function to flatten large 2D lists
+def fast_flatten(in_list):
+    return list(chain.from_iterable(in_list))
+
+
 def main(topn, start_ym, end_ym):
-    # the most prolific senders, top-N senders
+
+    print("--> Read data ...")
+    # prepare data
+    ffname = os.path.join(ROOT_DIR, "data", "raw", "enron-event-history-all.csv")
+
+    df = pd.read_csv(
+        ffname,
+        header=None,
+        converters={
+            0: lambda x: dt.datetime.fromtimestamp(int(x) / 1000.0),
+        },
+        names=["datetime", "id", "sender", "recipients", "topic", "mode"],
+        usecols=["datetime", "sender", "recipients"],
+    )
+    print("--> Clean data ...")
+    df["date"] = df.datetime.dt.date
+    df["time"] = df.datetime.dt.time
+
+    # drop any rows with missing values (None) at 'sender' or 'recipients' columns
+    df.dropna(axis=0, how="any", subset=["sender", "recipients"], inplace=True)
+
+    # convert all entries of 'sender'/'recipients' columns to lower case
+    def func(x):
+        x = x.lower()
+        x = x.replace('"', "")
+        return x
+
+    df[["sender", "recipients"]] = df[["sender", "recipients"]].applymap(func)
+
+    # tokenize the recipient column
+    df.recipients = df.recipients.str.split("|")
+
+    print("--> Create recipient data frame ...")
+    column_names = ["datetime", "person"]
+    frames = []
+    for idx, row in df.loc[0:, :].iterrows():
+        frames.append(pd.DataFrame(
+            data={"datetime": [row.datetime] * len(row.recipients), "person": row.recipients}))
+
+    # create diectionary from column names
+    df_dict_ = dict.fromkeys(column_names, [])
+
+    for col in column_names:
+        # use a generator to save memory
+        extracted = (frame[col] for frame in frames)
+        # flatten and save to df_dict
+        df_dict_[col] = fast_flatten(extracted)
+    df_recipients = pd.DataFrame.from_dict(df_dict_)[column_names]
+
+    print("--> Create senders data frame ..")
+    df_senders = df[["datetime", "sender"]]
+    df_senders.rename(columns={"sender": "person"}, inplace=True)
+
 
     # get data path
-    path = os.path.join(ROOT_DIR, "data", "ext")
+    # path = os.path.join(ROOT_DIR, "data", "ext")
 
-    # load recipients data
-    ffname = os.path.join(path, "enron-recipients.csv")
-    df_recipients = pd.read_csv(ffname, parse_dates=["datetime"])
-    df_recipients.rename(columns={"recipient": "person"}, inplace=True)
-    ffname = os.path.join(path, "enron-senders.csv")
+    # # load recipients data
+    # ffname = os.path.join(path, "enron-recipients.csv")
+    # df_recipients = pd.read_csv(ffname, parse_dates=["datetime"])
+    # df_recipients.rename(columns={"recipient": "person"}, inplace=True)
+    # ffname = os.path.join(path, "enron-senders.csv")
+    #
+    # # load senders data
+    # df_senders = pd.read_csv(ffname, parse_dates=["datetime"])
+    # df_senders.rename(columns={"sender": "person"}, inplace=True)
+    # # get yearMonth attribute as "date"
 
-    # load senders data
-    df_senders = pd.read_csv(ffname, parse_dates=["datetime"])
-    df_senders.rename(columns={"sender": "person"}, inplace=True)
-    # get yearMonth attribute as "date"
+    print("Create person summary data ...")
+
     df_senders["date"] = df_senders.datetime.dt.to_period("M")
     df_recipients["date"] = df_recipients.datetime.dt.to_period("M")
 
@@ -84,7 +147,7 @@ def main(topn, start_ym, end_ym):
         .reset_index() \
         .sort_values(by="sent", ascending=False) \
         .reset_index()
-    # print(df_person_suammary.head())
+
     # save person-count summary
     ffname = os.path.join(ROOT_DIR, "data", "ext",
                           "enron-person-summary.csv")
@@ -97,12 +160,13 @@ def main(topn, start_ym, end_ym):
     df_topn = df_counts.loc[topn_senders, :].reset_index()
     df_topn.head(10)
 
+    print("--> Compute contact ratio ...")
     # Compute relative contact
     df_counts["relcontact"] = (df_counts.received - df_counts.sent).abs() / \
         df_counts[["received", "sent"]].max(axis=1)
 
+    print("--> Plot Trends ...")
     # plot sent trends
-    colors = list(range(40))
     title = "Number of emails sent by top-" + \
             str(topn) + " senders between '" + start_ym + "' and '" + end_ym
     colors = [" #ff0000", "#b2004c", "#8c0073", "#5900a6", "#0000ff"]

@@ -121,5 +121,7 @@ dependencies:
   - zope.interface=4.5.0
   - plotly=3.2.1
   - plotly-orca=1.1.1
+  - pip:
+    - future==0.16.0
 prefix: /home/aidin/miniconda3/envs/enron
 

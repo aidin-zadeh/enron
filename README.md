@@ -2,12 +2,13 @@
 This repository contains a Python project that builds email correspondences analytics for Enron email data. The current implementation of this project implements the following:
 
 1. A .csv file with three columns---"person", "sent", "received"---where the final two columns contain
- the number of emails that person sent or received ordered by number of sent emails.
+ the number of emails that person sent or received ordered by number of sent emails. The `csv` file will be stored at 
+ `enron/data/ext`.
 
 2. A PNG image visualizing the number of emails sent over time by some of the most prolific person
- , top-N senders in (1). 
+ , top-N senders in (1). The PNG file will be saved at `images` director. 
 
-3. A visualization that shows the [relative contact ratio](https://en.wikipedia.org/wiki/Relative_change_and_difference) for the same people in (2).
+3. A visualization that shows the [relative contact ratio](https://en.wikipedia.org/wiki/Relative_change_and_difference) for the same people in (2). The PNG file will be saved at `images` director. 
 
 
 ## Data
@@ -68,9 +69,7 @@ optional arguments:
                         Start date in Year-Month. Default=1998-05
   -d END, --end END     End date in Year-Month. Default=2002-12
 
-Example of use: `python -m enron.scripts.summarize --topn 5 --start 1998-05
---end 2002-12`
-
+Example of use: `python -m enron.scripts.summarize-enron --topn 5`
 ```
 
 ## To Do
