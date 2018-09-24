@@ -7,12 +7,8 @@ This repository contains a Python project that builds email correspondences anal
 2. A PNG image visualizing the number of emails sent over time by some of the most prolific person
  , top-N senders in (1). 
 
-3. A visualization that shows the relative contact ratio for the same people in (2). The relative 
-contact ratio is obtained as follows:
+3. A visualization that shows the relative contact ratio for the same people in (2).
 
-```math #yourmathlabel
-a + b = c
-```
 
 ## Data
 
