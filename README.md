@@ -7,12 +7,12 @@ This repository contains a Python project that builds email correspondences anal
 2. A PNG image visualizing the number of emails sent over time by some of the most prolific person
  , top-N senders in (1). 
 
-3. A visualization that shows the relative contact ratio for the same people in (2).
+3. A visualization that shows the [relative contact ratio](https://en.wikipedia.org/wiki/Relative_change_and_difference) for the same people in (2).
 
 
 ## Data
 
-The Enron event history (.csv, adapted from the widely-used publicly available data set) is included in this repo. The columns contain:
+The [Enron event history](https://github.com/aidinhass/enron/blob/master/enron/data/raw/enron-event-history-all.csv) (.csv, adapted from the widely-used publicly available data set) is included in this repo. The columns contain:
 
 * **time** - time is Unix time (in milliseconds)
 * **message identifier**
