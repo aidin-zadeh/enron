@@ -65,10 +65,6 @@ Create summary of Enron email correspondences
 optional arguments:
   -h, --help            show this help message and exit
   -t TOPN, --topn TOPN  Top-N sender. Default=`5`
-  -s START, --start START
-                        Start date in Year-Month. Default=1998-05
-  -d END, --end END     End date in Year-Month. Default=2002-12
-
 Example of use: `python -m enron.scripts.summarize-enron --topn 5`
 ```
 
