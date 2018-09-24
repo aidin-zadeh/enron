@@ -9,7 +9,7 @@ This repository contains a Python project that builds email correspondences anal
 
 3. A visualization that shows the relative contact ratio for the same people in (2). The relative 
 contact ratio is obtained as follows:
-<a href="https://www.codecogs.com/eqnedit.php?latex=E=mc^2" target="_blank"><img src="https://latex.codecogs.com/gif.latex? \vert \lvert E=mc^2" title="E=mc^2" /></a>
+<a href="https://www.codecogs.com/eqnedit.php?latex=E=mc^2" target="_blank"><img src="https://latex.codecogs.com/gif.latex? E=mc^2" title="E=mc^2" /></a>
 ## Data
 
 The Enron event history (.csv, adapted from the widely-used publicly available data set) is included in this repo. The columns contain:
