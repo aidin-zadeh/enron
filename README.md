@@ -69,7 +69,7 @@ Example of use: `python -m enron.scripts.summarize-enron --topn 5`
 ```
 
 ## To Do
-- [] Fix Pandas warnings
+- [ ] Fix Pandas warnings
 - [ ] Add start/end date features
 
 ## License
