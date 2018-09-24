@@ -22,6 +22,7 @@ The [Enron event history](https://github.com/aidinhass/enron/blob/master/enron/d
 * **mode** - always "email"
 
 ## Requirements
+- python                3.6
 - numpy                 1.15.1
 - pandas                0.23.4 
 - jupyter               1.0.0
